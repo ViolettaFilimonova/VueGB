@@ -1,16 +1,23 @@
 <template>
   <div id="app">
-    <Calculator msg="Calculator"></Calculator>
+
+    <NewCalculator msg="Calculator"></NewCalculator>
+    <SecondCalculator text="SecondCalculator"></SecondCalculator>
+
   </div>
 </template>
 
 <script>
-import Calculator from './components/Calculator.vue'
+
+import NewCalculator from "@/components/NewCalculator";
+import SecondCalculator from "@/components/SecondCalculator";
+
 
 export default {
   name: 'App',
   components: {
-    Calculator
+    NewCalculator,
+    SecondCalculator
   }
 }
 </script>
