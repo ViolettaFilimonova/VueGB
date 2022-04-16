@@ -5,16 +5,21 @@
     <input type="text" v-model.number="operand2">
 
     <div class="keyboard">
-      <button v-on:click="result = operand1 + operand2">+</button>
-      <button v-on:click="result = operand1 - operand2">-</button>
-      <button @click="result = operand1 / operand2" v-if="operand1 !== 0">/</button>
-      <button @click="result = operand1 / operand2" v-else disabled>/</button>
-      <button @click="result = operand1 * operand2">*</button>
+      <button @click="calculate('+')">+</button>
+      <button @click="calculate('-')">-</button>
+      <button @click="calculate('/')" >/</button>
+      <button @click="calculate('*')">*</button>
       <button @click="result = Math.floor(operand1 / operand2)">Целочисленное деление</button>
       <button @click="result = Math.pow(operand1, operand2)">Возведение в степень</button>
+      <template>hello world</template>
     </div>
-
+    {{err}}
     <h2>Result = {{result}}</h2>
+
+    <input v-model="checked" type="checkbox">Отобразить экранную клавиатуру
+    <div v-show="checked" class="numbers">
+      <button  v-for="(item, i) in numbers" :key="i">{{item}}</button>
+    </div>
 
   </div>
 </template>
@@ -29,7 +34,50 @@ export default {
     return {
       operand1: 0,
       operand2: 0,
-      result: 0
+      result: 0,
+      numbers:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '<-'],
+      num: 0,
+      show: false,
+      err: '',
+      checked:''
+    }
+  },
+  methods:{
+    calculate(operation){
+      switch (operation){
+        case "+":
+          this.err = ''
+          this.add()
+              break;
+        case "-":
+          this.err = ''
+          this.subtract()
+          break;
+        case "/":
+          this.err = ''
+          this.divide()
+          break;
+        case "*":
+          this.err = ''
+          this.multiply()
+          break;
+      }
+    },
+    add(){
+      this.result = this.operand1 + this.operand2
+    },
+    subtract(){
+      this.result = this.operand1 - this.operand2
+    },
+    divide(){
+      const  {operand1, operand2} = this
+      if (operand1 === 0){
+        this.err = 'На ноль делить нельзя'
+      }
+      this.result = operand1 / operand2
+    },
+    multiply() {
+      this.result = this.operand1 * this.operand2
     }
   }
 }
