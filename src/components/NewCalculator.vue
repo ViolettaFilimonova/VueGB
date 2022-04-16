@@ -18,7 +18,10 @@
 
     <input v-model="checked" type="checkbox">Отобразить экранную клавиатуру
     <div v-show="checked" class="numbers">
-      <button  v-for="(item, i) in numbers" :key="i">{{item}}</button>
+      <button  v-for="(item, i) in numbers" @click="numb(item)" :key="i" >{{item}}</button>
+<!--      <button @click="clear()"><&#45;&#45;</button>-->
+
+      {{num}}
     </div>
 
   </div>
@@ -35,8 +38,8 @@ export default {
       operand1: 0,
       operand2: 0,
       result: 0,
-      numbers:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '<-'],
-      num: 0,
+      numbers:["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      num: "0",
       show: false,
       err: '',
       checked:''
@@ -78,6 +81,13 @@ export default {
     },
     multiply() {
       this.result = this.operand1 * this.operand2
+    },
+    clear(){
+
+    },
+    numb(item){
+
+      this.operand1 += item
     }
   }
 }
