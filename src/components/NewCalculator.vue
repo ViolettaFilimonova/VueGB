@@ -11,17 +11,20 @@
       <button @click="calculate('*')">*</button>
       <button @click="result = Math.floor(operand1 / operand2)">Целочисленное деление</button>
       <button @click="result = Math.pow(operand1, operand2)">Возведение в степень</button>
-      <template>hello world</template>
     </div>
     {{err}}
     <h2>Result = {{result}}</h2>
 
     <input v-model="checked" type="checkbox">Отобразить экранную клавиатуру
     <div v-show="checked" class="numbers">
-      <button  v-for="(item, i) in numbers" @click="numb(item)" :key="i" >{{item}}</button>
-      <button @click="cle()">delete</button>
-
-      {{num}}
+      <button  v-for="(item, i) in numbers" @click="numb(item, num)" :key="i" >{{item}}</button>
+      <button @click="clean(num)">delete</button>
+     <div>
+       <input v-model="num" type="radio" name="operand" value="true">
+       <label >Операнд1</label>
+       <input v-model="num" type="radio" name="operand" value="false">
+       <label >Операнд2</label>
+     </div>
     </div>
 
   </div>
@@ -39,7 +42,7 @@ export default {
       operand2: '',
       result: 0,
       numbers:["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
-      num: "0",
+      num: " ",
       show: false,
       err: '',
       checked:''
@@ -67,7 +70,7 @@ export default {
       }
     },
     add(){
-      this.result = this.operand1 + this.operand2
+      this.result = Number(this.operand1) + Number(this.operand2)
     },
     subtract(){
       this.result = this.operand1 - this.operand2
@@ -82,13 +85,25 @@ export default {
     multiply() {
       this.result = this.operand1 * this.operand2
     },
-    cle(){
-      let str = this.operand1.slice(0, -1)
-      this.operand1 = str
+    clean(value){
+      let str;
+      if (value === 'true') {
+        str = this.operand1.slice(0, -1)
+        this.operand1 = str
+      }else{
+         str = this.operand2.slice(0, -1)
+        this.operand2 = str
+      }
     },
-    numb(item){
-
-      this.operand1 += item
+    numb(item, value){
+      if (value === 'true') {
+        this.operand1 += item
+      }else if (value === ''){
+        this.operand1 += item
+      }
+      else{
+        this.operand2 += item
+      }
     }
   }
 }
