@@ -42,7 +42,7 @@ export default {
       operand2: '',
       result: 0,
       numbers:["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
-      num: " ",
+      num: null,
       show: false,
       err: '',
       checked:''
@@ -95,10 +95,10 @@ export default {
         this.operand2 = str
       }
     },
-    numb(item, value){
-      if (value === 'true') {
+    numb(item , num = 'true'){
+      if (num === 'true') {
         this.operand1 += item
-      }else if (value === ''){
+      }else if (num === null){
         this.operand1 += item
       }
       else{
