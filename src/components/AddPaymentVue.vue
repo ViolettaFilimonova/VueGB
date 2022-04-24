@@ -30,16 +30,20 @@ export default {
         value: this.value
       }
       this.$emit('onClickSave', data)
-      console.log(data)
+
     }
   },
   computed:{
     getCurrentDate(){
-      const today = new Date()
-      const d = today.getDay()
-      const m = today.getMonth()+1
-      const y = today.getFullYear()
-      return `${d}.${m}.${y}`
+      // const today = new Date()
+      // const d = today.getDay()
+      // const m = today.getMonth()+1
+      // const y = today.getFullYear()
+      // return `${d}.${m}.${y}`
+      const date =  new Date()
+      const day = new Intl.DateTimeFormat('en-GB').format(date);
+
+      return day
     }
   }
 }
