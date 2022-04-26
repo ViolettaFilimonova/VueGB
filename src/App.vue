@@ -8,8 +8,8 @@
 
     <button @click="show=!show">ADD NEW COST +</button>
     <AddPaymentVue v-if="!show" @onClickSave="addPaymentData($event)"  />
-    <PaymentDisplay :items="paymentList" />
-    <ListPayment :items="paymentList"/>
+    <PaymentDisplay :items="currentElement"  />
+    <ListPagination :length="paymentList.length" :cur="cur" :n="n" @changePage="changePage"/>
 
   </div>
 </template>
@@ -21,7 +21,7 @@
 //import CounterButton from "@/components/CounterButton"
 import PaymentDisplay from "@/components/PaymentDisplay";
 import AddPaymentVue from "@/components/AddPaymentVue";
-import ListPayment from "@/components/ListPayment";
+import ListPagination from "@/components/ListPagination";
 
 
 export default {
@@ -31,7 +31,7 @@ export default {
     // CounterButton,
     PaymentDisplay,
     AddPaymentVue,
-    ListPayment
+    ListPagination
   },
   data(){
     return{
@@ -39,9 +39,14 @@ export default {
       text: 'Change Text',
       paymentList: [],
       total: 0,
+      cur: 1,
+      n: 5,
     }
   },
   methods:{
+    changePage(page){
+      this.cur = page
+    },
     addPaymentData(data){
       this.paymentList.push(data)
     },
@@ -75,8 +80,28 @@ export default {
           category: "Food",
           value: 169,
         },
+        {
+          date: "08.08.2022",
+          category: "Food",
+          value: 169,
+        },
+        {
+          date: "08.08.2022",
+          category: "Food",
+          value: 19,
+        },
+        {
+          date: "08.08.2022",
+          category: "Food",
+          value: 111,
+        },
       ]
     }
+  },
+  computed:{
+    currentElement(){
+      return this.paymentList.slice(this.n * (this.cur - 1), this.n * (this.cur - 1) + this.n)
+    },
   },
   created() {
     this.paymentList = this.fetchData()

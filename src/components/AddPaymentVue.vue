@@ -44,7 +44,7 @@ export default {
       const day = new Intl.DateTimeFormat('en-GB').format(date);
 
       return day
-    }
+    },
   }
 }
 </script>
