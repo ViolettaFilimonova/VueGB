@@ -105,6 +105,7 @@ export default {
   },
   created() {
     this.paymentList = this.fetchData()
+    this.$store.commit('setPaymentsListData', this.fetchData())
   }
 }
 </script>
