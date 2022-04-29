@@ -1,17 +1,110 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+<!--    <NewCalculator msg="Calculator"></NewCalculator>-->
+<!--    <CounterButton :text="text" v-on:change="updateTitle($event)"  v-if="show"/>-->
+<!--    <button @click="show=!show">show/hide</button>-->
+
+
+    <button @click="show=!show">ADD NEW COST +</button>
+    <AddPaymentVue v-if="!show" @onClickSave="addPaymentData($event)"  />
+    <PaymentDisplay :items="currentElement"  />
+    <ListPagination :length="paymentList.length" :cur="cur" :n="n" @changePage="changePage"/>
+
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+//import NewCalculator from "@/components/NewCalculator";
+// import SecondCalculator from "@/components/SecondCalculator";
+//import CounterButton from "@/components/CounterButton"
+import PaymentDisplay from "@/components/PaymentDisplay";
+import AddPaymentVue from "@/components/AddPaymentVue";
+import ListPagination from "@/components/ListPagination";
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    // NewCalculator,
+    // CounterButton,
+    PaymentDisplay,
+    AddPaymentVue,
+    ListPagination
+  },
+  data(){
+    return{
+      show: true,
+      text: 'Change Text',
+      paymentList: [],
+      total: 0,
+      cur: 1,
+      n: 5,
+    }
+  },
+  methods:{
+    changePage(page){
+      this.cur = page
+    },
+    addPaymentData(data){
+      this.paymentList.push(data)
+    },
+    updateTitle(ev){
+      this.text = ev
+    },
+    fetchData(){
+      return [
+        {
+          date: "06.06.2022",
+          category: "Food",
+          value: 169,
+        },
+        {
+          date: "07.07.2022",
+          category: "Transport",
+          value: 69,
+        },
+        {
+          date: "08.08.2022",
+          category: "Food",
+          value: 169,
+        },
+        {
+          date: "07.07.2022",
+          category: "Transport",
+          value: 69,
+        },
+        {
+          date: "08.08.2022",
+          category: "Food",
+          value: 169,
+        },
+        {
+          date: "08.08.2022",
+          category: "Food",
+          value: 169,
+        },
+        {
+          date: "08.08.2022",
+          category: "Food",
+          value: 19,
+        },
+        {
+          date: "08.08.2022",
+          category: "Food",
+          value: 111,
+        },
+      ]
+    }
+  },
+  computed:{
+    currentElement(){
+      return this.paymentList.slice(this.n * (this.cur - 1), this.n * (this.cur - 1) + this.n)
+    },
+  },
+  created() {
+    this.paymentList = this.fetchData()
   }
 }
 </script>
