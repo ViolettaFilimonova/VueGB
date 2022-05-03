@@ -3,8 +3,10 @@
 
    <div >
      <input type="text" v-model="date" placeholder="date">
-     <input type="text" v-model="category" placeholder="category">
-     <input type="text" v-model="value" placeholder="value">
+     <select v-model="category" v-if="categoryList">
+       <option v-for="(value, ind) in categoryList" :key="ind">{{value}}</option>
+     </select>
+     <input type="text" v-model.number="value" placeholder="value">
      <button @click="onClickSave">Save</button>
    </div>
   </div>
@@ -29,8 +31,9 @@ export default {
         category: this.category,
         value: this.value
       }
-      this.$emit('onClickSave', data)
-
+      // this.$emit('onClickSave', data)
+      this.$store.commit('addDataToPaymentList', data)
+      console.log(data)
     }
   },
   computed:{
@@ -45,6 +48,17 @@ export default {
 
       return day
     },
+    categoryList(){
+      return this.$store.getters.getCategoryList
+    }
+  },
+  async created(){
+    await this.$store.dispatch('fetchCategoryList')
+  },
+  mounted() {
+    if (this.categoryList.length){
+      this.category = this.categoryList[0]
+    }
   }
 }
 </script>

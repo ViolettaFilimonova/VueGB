@@ -5,11 +5,11 @@
 <!--    <CounterButton :text="text" v-on:change="updateTitle($event)"  v-if="show"/>-->
 <!--    <button @click="show=!show">show/hide</button>-->
 
-
+    <div>Total Price = {{getFullPaymentValue}}</div>
     <button @click="show=!show">ADD NEW COST +</button>
     <AddPaymentVue v-if="!show" @onClickSave="addPaymentData($event)"  />
     <PaymentDisplay :items="currentElement"  />
-    <ListPagination :length="paymentList.length" :cur="cur" :n="n" @changePage="changePage"/>
+    <ListPagination :length="12" :cur="cur" :n="n" @changePage="changePage"/>
 
   </div>
 </template>
@@ -22,6 +22,7 @@
 import PaymentDisplay from "@/components/PaymentDisplay";
 import AddPaymentVue from "@/components/AddPaymentVue";
 import ListPagination from "@/components/ListPagination";
+import { mapMutations, mapGetters } from "vuex"
 
 
 export default {
@@ -37,15 +38,18 @@ export default {
     return{
       show: true,
       text: 'Change Text',
-      paymentList: [],
       total: 0,
       cur: 1,
       n: 5,
     }
   },
   methods:{
+    ...mapMutations({
+      myMutations: 'setPaymentsListData'
+    }),
     changePage(page){
       this.cur = page
+      this.$store.dispatch('fetchData', page)
     },
     addPaymentData(data){
       this.paymentList.push(data)
@@ -53,60 +57,21 @@ export default {
     updateTitle(ev){
       this.text = ev
     },
-    fetchData(){
-      return [
-        {
-          date: "06.06.2022",
-          category: "Food",
-          value: 169,
-        },
-        {
-          date: "07.07.2022",
-          category: "Transport",
-          value: 69,
-        },
-        {
-          date: "08.08.2022",
-          category: "Food",
-          value: 169,
-        },
-        {
-          date: "07.07.2022",
-          category: "Transport",
-          value: 69,
-        },
-        {
-          date: "08.08.2022",
-          category: "Food",
-          value: 169,
-        },
-        {
-          date: "08.08.2022",
-          category: "Food",
-          value: 169,
-        },
-        {
-          date: "08.08.2022",
-          category: "Food",
-          value: 19,
-        },
-        {
-          date: "08.08.2022",
-          category: "Food",
-          value: 111,
-        },
-      ]
-    }
   },
   computed:{
     currentElement(){
-      return this.paymentList.slice(this.n * (this.cur - 1), this.n * (this.cur - 1) + this.n)
+      return this.getPaymentList.slice(this.n * (this.cur - 1), this.n * (this.cur - 1) + this.n)
     },
+    ...mapGetters(['getFullPaymentValue', 'getPaymentList'])
   },
-  created() {
-    this.paymentList = this.fetchData()
-    this.$store.commit('setPaymentsListData', this.fetchData())
+ created() {
+     this.$store.dispatch('fetchData',this.cur)
+
+    // this.paymentList = this.fetchData()
+    // this.$store.commit('setPaymentsListData', this.fetchData())
+    // this.myMutations(this.fetchData())
   }
+
 }
 </script>
 
