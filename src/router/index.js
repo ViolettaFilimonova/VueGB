@@ -1,25 +1,29 @@
-import Vue from "vue";
-import Router from "vue-router"
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import HomeView from '../views/HomeView.vue'
 
-import NewCalculator from "@/components/NewCalculator";
-import ListPagination from "@/components/ListPagination";
-
-Vue.use(Router)
+Vue.use(VueRouter)
 
 const routes = [
-    {
-        path: '/',
-        name: 'Dashboard',
-        components: NewCalculator
-    },
-    {
-        path: '/about',
-        name: 'About',
-        component: ListPagination
-    },
+  {
+    path: '/',
+    name: 'home',
+    component: HomeView
+  },
+  {
+    path: '/about',
+    name: 'about',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  }
 ]
 
-export default new Router({
-    mode: 'history',
-    routes
+const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
 })
+
+export default router

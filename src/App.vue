@@ -1,105 +1,44 @@
 <template>
   <div id="app">
-    <header>
-      <nav>
-<!--        <a href="dashboard">Dashboard</a>/-->
-<!--        <a href="about">About</a>/-->
-<!--        <a href="notfound">Not found</a>-->
-      </nav>
-      <router-view/>
-    </header>
-
-
-<!--    <CounterButton :text="text" v-on:change="updateTitle($event)"  v-if="show"/>-->
-<!--    <button @click="show=!show">show/hide</button>-->
-
-<!--  <main>-->
-
-<!--    <PaymentDisplay :items="currentElement" v-if="page === 'dashboard'"  />-->
-<!--    <ListPagination :length="12" :cur="cur" :n="n" @changePage="changePage" v-if="page === 'about'"/>-->
-<!--    <NewCalculator msg="Calculator" v-if="page === 'notfound'"></NewCalculator>-->
-<!--  </main>-->
-
+    <nav>
+      <a href="#home">Home</a>/
+      <a href="#about">About</a>/
+      <a href="#notfound">NotFound</a>
+    </nav>
+    <main>
+      <home-view v-if="page==='home'"/>
+      <about-view v-if="page==='about'"/>
+      <not-found v-if="page==='notfound'"/>
+    </main>
   </div>
 </template>
-
 <script>
-
-import NewCalculator from "@/components/NewCalculator";
-// import SecondCalculator from "@/components/SecondCalculator";
-//import CounterButton from "@/components/CounterButton"
-import PaymentDisplay from "@/components/PaymentDisplay";
-// import AddPaymentVue from "@/components/AddPaymentVue";
-import ListPagination from "@/components/ListPagination";
-import { mapMutations, mapGetters } from "vuex"
-
-
-export default {
-  name: 'App',
-  components: {
-    NewCalculator,
-    // CounterButton,
-    PaymentDisplay,
-    // AddPaymentVue,
-    ListPagination
-  },
-  data(){
-    return{
-      show: true,
-      text: 'Change Text',
-      total: 0,
-      cur: 1,
-      n: 5,
-      page: ''
-    }
-  },
-  methods:{
-    setPage(){
-      this.page = location.pathname.slice(1)
+import HomeView from "@/views/HomeView"
+import AboutView from "@/views/AboutView";
+import NotFound from "@/views/NotFound";
+  export default {
+    name: 'App',
+    components: {NotFound, HomeView, AboutView},
+    comments:{
+      AboutView, HomeView, NotFound
     },
-    ...mapMutations({
-      myMutations: 'setPaymentsListData'
-    }),
-    changePage(page){
-      this.cur = page
-      this.$store.dispatch('fetchData', page)
+    data(){
+      return{
+        page: ''
+      }
     },
-    addPaymentData(data){
-      this.paymentList.push(data)
+    methods:{
+      setPage(){
+       this.page = location.hash.slice(1)
+      }
     },
-    updateTitle(ev){
-      this.text = ev
-    },
-  },
-  computed:{
-    currentElement(){
-      return this.getPaymentList.slice(this.n * (this.cur - 1), this.n * (this.cur - 1) + this.n)
-    },
-    ...mapGetters(['getFullPaymentValue', 'getPaymentList'])
-  },
- created() {
-     this.$store.dispatch('fetchData',this.cur)
-
-    // this.paymentList = this.fetchData()
-    // this.$store.commit('setPaymentsListData', this.fetchData())
-    // this.myMutations(this.fetchData())
-  },
-  mounted(){
-    this.setPage()
-    const links = this.$el.querySelectorAll('a')
-    links.forEach(link => {
-      link.addEventListener('click', (event) =>{
-        event.preventDefault()
-        history.pushState({}, '', link.href)
+    mounted() {
+     
+      window.addEventListener('hashchange', ()=>{
         this.setPage()
       })
-    })
-    window.addEventListener('popstate', () =>{
-      this.setPage()
-    })
+    }
   }
-
-}
 </script>
 
 <style>
@@ -109,6 +48,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
