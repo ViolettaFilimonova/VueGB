@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <nav>
-      <a href="#home">Home</a>/
-      <a href="#about">About</a>/
-      <a href="#notfound">NotFound</a>
+      <a href="home">Home</a>/
+      <a href="about">About</a>/
+      <a href="notfound">NotFound</a>
     </nav>
     <main>
       <home-view v-if="page==='home'"/>
@@ -19,9 +19,6 @@ import NotFound from "@/views/NotFound";
   export default {
     name: 'App',
     components: {NotFound, HomeView, AboutView},
-    comments:{
-      AboutView, HomeView, NotFound
-    },
     data(){
       return{
         page: ''
@@ -29,12 +26,20 @@ import NotFound from "@/views/NotFound";
     },
     methods:{
       setPage(){
-       this.page = location.hash.slice(1)
+       this.page = location.pathname.slice(1)
       }
     },
     mounted() {
-     
-      window.addEventListener('hashchange', ()=>{
+      this.setPage()
+      const links = this.$el.querySelectorAll('a')
+      links.forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault()
+          history.pushState({}, '', link.href)
+          this.setPage()
+        })
+      });
+      window.addEventListener('popstate', ()=>{
         this.setPage()
       })
     }
