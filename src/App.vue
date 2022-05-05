@@ -1,24 +1,17 @@
 <template>
   <div id="app">
     <nav>
-      <a href="home">Home</a>/
-      <a href="about">About</a>/
-      <a href="notfound">NotFound</a>
+      <router-link to="/">Home</router-link>/
+      <router-link to="/about">About</router-link>
     </nav>
-    <main>
-      <home-view v-if="page==='home'"/>
-      <about-view v-if="page==='about'"/>
-      <not-found v-if="page==='notfound'"/>
-    </main>
+  <router-view/>
   </div>
 </template>
 <script>
-import HomeView from "@/views/HomeView"
-import AboutView from "@/views/AboutView";
-import NotFound from "@/views/NotFound";
+
   export default {
     name: 'App',
-    components: {NotFound, HomeView, AboutView},
+
     data(){
       return{
         page: ''
