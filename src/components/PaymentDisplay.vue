@@ -1,7 +1,7 @@
 <template>
-  <div class="paymentList">
+  <div class="paymentList" >
     <div class="paymentItem" v-for="(item, index) in items" :key="index">
-      {{item}}
+      {{ item }}
     </div>
   </div>
 </template>
